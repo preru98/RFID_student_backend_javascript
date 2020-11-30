@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const URI = '******';
+
+// const URI = '******';
 
 module.exports = connectDB = () => {
     mongoose.connect(URI, {
@@ -7,9 +8,9 @@ module.exports = connectDB = () => {
         useUnifiedTopology: true
     })
     .then(() => {
-    console.log('Connection Established with remote Database!')
+    console.log('Connection Established with remote Database!');
     })
     .catch( (err) => {
-        console.log(err)
+        console.log(err);
     });
 } 
