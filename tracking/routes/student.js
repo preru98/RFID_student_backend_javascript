@@ -41,4 +41,20 @@ studentRouter.route('/')
     })
 })
 
+.delete((req, res, next) => {
+    Students.remove(req.body)
+    .then( (student) =>{
+        res.statusCode=200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(student);
+    }, (err) => {
+        console.log(err);
+        next(err);
+    })
+    .catch( (err) => {
+        console.log(err);
+        next(err);
+    })
+})
+
 module.exports = studentRouter;
