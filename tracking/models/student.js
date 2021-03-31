@@ -1,25 +1,6 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-
-const courseSchema = Schema(
-    {
-        name : {
-            type : String,
-            required : true
-        }
-    }
-);
-
-const tapTimingSchema = Schema(
-    {
-
-    },
-    {
-        timestamps : true
-    }
-);
-
 const studentSchema = Schema(
     {
         name : {
@@ -52,14 +33,14 @@ const studentSchema = Schema(
             required : true  
         },
 
-        tagUId : {
-            type : String,
-            required : false
-        },
+        // tagUId : {
+        //     type : String,
+        //     required : false
+        // },
 
-        attendance : [ tapTimingSchema ],
+        //attendance : [ tapTimingSchema ],
 
-        course : courseSchema,
+        //course : courseSchema,
 
     },
 
