@@ -19,7 +19,7 @@ const studentSchema = Schema(
         },
 
         contact : {
-            type : Number,
+            type : String,
             required : true
         },
         

@@ -12,9 +12,9 @@ const courseRouter = require('./routes/course');
 
 const app = express();
 
-// view engine setup
-app.use(express.static('views'));                   
-app.set('view engine', 'ejs');   
+// // view engine setup
+// app.use(express.static('views'));                   
+// app.set('view engine', 'ejs');   
 
 app.use(logger('dev'));
 app.use(express.json());
