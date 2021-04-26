@@ -1,4 +1,5 @@
 const mongoose = require ('mongoose');
+const course = require('./courseSchema').schema;
 const Schema = mongoose.Schema;
 
 const studentSchema = Schema(
@@ -40,7 +41,10 @@ const studentSchema = Schema(
 
         //attendance : [ tapTimingSchema ],
 
-        //course : courseSchema,
+        courseAllocated : {
+            type : course, 
+            require :false
+        }
 
     },
 

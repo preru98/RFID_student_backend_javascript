@@ -41,20 +41,31 @@ studentRouter.route('/')
     })
 })
 
-.delete((req, res, next) => {
-    Students.remove(req.body)
-    .then( (student) =>{
-        res.statusCode=200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(student);
+studentRouter.route('/:studentId')
+
+.get((req,res,next) => {
+    Students.findById(req.params.studentId)
+    .then( (student) => {
+        if(student){
+            res.statusCode=200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(student);
+        }
+        else{   
+            console.log("wrong id");
+            err = new Error("Student with Id " + req.params.studentId + " not found");
+            err.statusCode = 404;
+            err.message = err.message;
+            next(err); 
+        }
     }, (err) => {
-        console.log(err);
+        console.log(err.message);
         next(err);
     })
-    .catch( (err) => {
-        console.log(err);
+    .catch( (err) =>{
         next(err);
     })
 })
+
 
 module.exports = studentRouter;
