@@ -1,5 +1,6 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
+const semester = require('./semesterSchema').schema;
 
 
 const courseSchema = Schema(
@@ -9,7 +10,7 @@ const courseSchema = Schema(
             required : true
         }, 
         semesters : {
-            type:[subject], 
+            type:[semester], 
             required : true
         }
     }

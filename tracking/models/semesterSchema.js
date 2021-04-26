@@ -1,12 +1,12 @@
 const mongoose = require ('mongoose');
-const subject = require('./subjectSchema');
+const subject = require('./subjectSchema').schema;
 const Schema = mongoose.Schema;
 
 
 const semesterSchema = Schema(
     {
         name : {
-            type : number,
+            type : Number,
             required : true
         }, 
         subjects : {
