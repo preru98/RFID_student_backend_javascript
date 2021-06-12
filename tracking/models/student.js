@@ -34,10 +34,10 @@ const studentSchema = Schema(
             required : true  
         },
 
-        // tagUId : {
-        //     type : String,
-        //     required : false
-        // },
+        tagUId : {
+            type : String,
+            required : false
+        },
 
         //attendance : [ tapTimingSchema ],
 

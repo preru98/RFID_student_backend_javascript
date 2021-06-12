@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const Students = require('../models/student');
 const Course = require('../models/courseSchema');
+const Tag = require('../models/tagSchema');
 studentRouter = express.Router();
 
 studentRouter.use(bodyParser.json());
@@ -120,41 +120,66 @@ studentRouter.route('/:studentId/allocation/:courseId')
 })
 
 
-// .put(verify, (req, res, next) => {
-//     Posts.findByIdAndUpdate(req.params.postId, { $set: req.body }, {new :true })
-//     .then( (post) =>{
-//         if(post){
-//             res.statusCode=200;
-//             res.setHeader('Content-Type', 'application/json'),
-//             res.json(post)
-//         }
-//         else{   
-//             err = new Error("Post with Id " + req.params.postId + " not found");
-//             err.statusCode=404;
-//             return next(err); 
-//         }
-//     }, (err) => {
-//         next(err);
-//     })
-//     .catch( (err) =>{
-//         next(err);
-//     })
-// })
+studentRouter.route('/:studentId/map')
 
-// .delete(verify, (req, res, next) => {
-//     Posts.findByIdAndRemove(req.params.postId)
-//     .then( ( post ) =>{
-//         console.log(post)
-//         res.statusCode=200
-//         res.setHeader('Content-Type', 'application/json')
-//         res.json(post)
-//     }, (err) => {
-//         next(err)
-//     })
-//     .catch( (err) => {
-//         next(err)
-//     })
-// })
-
+.put((req, res, next) => {
+    
+    Students.findById(req.params.studentId)
+    .then( (student) => {
+        if(student){
+            Tag.create(req.body)
+            .then( (tag) => {
+                console.log("Tag object created", tag);
+                student.tagUId = tag.tagUId;
+                student.save()
+                .then( (student) => {
+                    console.log("Student mapping successful");
+                    res.statusCode=200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json({student: student, tag:tag});
+                }, (err) => {
+                    console.log("Something went wrong while updating student", err);
+                    err = new Error("Error mapping " + "Aborting mapping procedure");
+                    err.statusCode = 423;
+                    next(err);
+                })
+                .catch( (err) => {
+                    console.log("Something went wrong while updating student", err);
+                    err = new Error("Error mapping " + "Aborting mapping procedure");
+                    err.statusCode = 423;
+                    next(err);
+                })
+            }, (err) => {
+                console.log("Error creating tag object", err);
+                err = new Error("Error creating tag object" + req.body + "Aborting mapping procedure");
+                err.statusCode = 423;
+                next(err);
+            })
+            .catch( (err) => {
+                console.log("Error creating tag object", err);
+                err = new Error("Error creating tag object" + req.body + "Aborting mapping procedure");
+                err.statusCode = 423;
+                next(err);
+            })
+        }
+        else{   
+            console.log("Student Id does not exist");
+            err = new Error("Student with Id " + req.params.studentId + " not found. Aborting mapping procedure");
+            err.statusCode = 423;
+            next(err); 
+        }
+    }, (err) => {
+        console.log("Error finding student. Aborting Mapping procedure", err); 
+        err = new Error("Error finding student." + req.params.studentId +" Aborting Mapping procedure");
+        err.statusCode = 404;
+        next(err);
+    })
+    .catch( (err) =>{
+        console.log("Error finding student. Aborting Mapping procedure", err); 
+        err = new Error("Error finding student." + req.params.studentId +" Aborting Mapping procedure");
+        err.statusCode = 404;
+        next(err);
+    });
+})
 
 module.exports = studentRouter;
