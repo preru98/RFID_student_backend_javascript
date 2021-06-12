@@ -10,6 +10,7 @@ const usersRouter = require('./routes/users');
 const testRouter = require('./routes/dbDemo');
 const studentRouter = require('./routes/student');
 const courseRouter = require('./routes/course');
+const attendanceRouter = require('./routes/attendance');
 const tagRouter = require('./routes/tag');
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/test', testRouter);
 app.use('/course', courseRouter);
 app.use('/student', studentRouter);
 app.use('/tag', tagRouter);
+app.use('/attendance', attendanceRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
