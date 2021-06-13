@@ -9,6 +9,8 @@ attendanceRouter = express.Router();
 
 attendanceRouter.use(bodyParser.json());
 
+const currentSubject = "Computer Graphics";
+
 attendanceRouter.route('/')
 
 .get((req, res, next) => {
@@ -34,7 +36,8 @@ attendanceRouter.route('/mark')
             const newAttendeeRecord = {
                 tagUId : req.body.tagUId,
                 studentRollNumber : student.rollNumber,
-                studentName : student.name
+                studentName : student.name, 
+                subject : currentSubject
             }
             Attendance.create(newAttendeeRecord)
             .then( (tapTiming) => {
@@ -78,14 +81,50 @@ attendanceRouter.route('/:studentRollNumber')
         if(student){
             Attendance.find({studentRollNumber:req.params.studentRollNumber})
             .then( (attendanceRecord) => {
-                console.log("attendance record length", attendanceRecord.length );
                 for(let i=0;i< attendanceRecord.length; i++ ){
                     attendanceRecord[i] = attendanceRecord[i].toObject();
-                    console.log("i", i);
-                    console.log("attendance record", i ,  attendanceRecord[i] );
                     attendanceRecord[i].createdAt=dateFormat(attendanceRecord[i].createdAt.toISOString(), "dddd, mmmm dS, yyyy, h:MM:ss TT");
                 }
-                console.log("attendance record ", attendanceRecord );
+                res.statusCode=200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(attendanceRecord);
+            }, (err) => {
+                console.log(err);
+                next(err);
+            })
+            .catch( (err) => {
+                console.log(err);
+                next(err);
+            })
+        }
+        else{   
+            console.log("wrong roll number");
+            err = new Error("Student with roll number " + req.params.studentRollNumber + " not found");
+            err.statusCode = 404;
+            err.message = err.message;
+            next(err); 
+        }
+    }, (err) => {
+        console.log(err.message);
+        next(err);
+    })
+    .catch( (err) =>{
+        next(err);
+    })
+})
+
+attendanceRouter.route('/:studentRollNumber/:subjectName/')
+//get student attendance with roll number for a  specific subject
+.get((req,res,next) => {
+    Student.find({rollNumber:req.params.studentRollNumber})
+    .then( (student) => {
+        if(student){
+            Attendance.find({studentRollNumber:req.params.studentRollNumber, subject : req.params.subjectName})
+            .then( (attendanceRecord) => {
+                for(let i=0;i< attendanceRecord.length; i++ ){
+                    attendanceRecord[i] = attendanceRecord[i].toObject();
+                    attendanceRecord[i].createdAt=dateFormat(attendanceRecord[i].createdAt.toISOString(), "dddd, mmmm dS, yyyy, h:MM:ss TT");
+                }
                 res.statusCode=200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(attendanceRecord);

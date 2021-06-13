@@ -14,7 +14,11 @@ const attendanceSchema = Schema(
         studentName : {
             type : String,
             require: true
-        }
+        }, 
+        subject : {
+            type : String,
+            require: true
+        }, 
     },    
     {
         timestamps:true
