@@ -6,6 +6,14 @@ const attendanceSchema = Schema(
         tagUId : {
             type : String,
             required : true
+        }, 
+        studentRollNumber : {
+            type : String,
+            required : true
+        },
+        studentName : {
+            type : String,
+            require: true
         }
     },    
     {
